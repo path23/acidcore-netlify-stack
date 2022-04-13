@@ -18,22 +18,22 @@ function getRandomString(length) {
 
 async function main({ rootDirectory }) {
   const README_PATH = path.join(rootDirectory, "README.md");
-  const FLY_TOML_PATH = path.join(rootDirectory, "fly.toml");
+  const NETLIFY_TOML_PATH = path.join(rootDirectory, "netlify.toml");
   const EXAMPLE_ENV_PATH = path.join(rootDirectory, ".env.example");
   const ENV_PATH = path.join(rootDirectory, ".env");
   const PACKAGE_JSON_PATH = path.join(rootDirectory, "package.json");
 
-  const REPLACER = "indie-stack-template";
+  const REPLACER = "acidcore-netlify-stack-template";
 
   const DIR_NAME = path.basename(rootDirectory);
-  const SUFFIX = getRandomString(2);
+  const SUFFIX = getRandomString(3);
 
   const APP_NAME = (DIR_NAME + "-" + SUFFIX)
     // get rid of anything that's not allowed in an app name
     .replace(/[^a-zA-Z0-9-_]/g, "-");
 
   const [prodContent, readme, env, packageJson] = await Promise.all([
-    fs.readFile(FLY_TOML_PATH, "utf-8"),
+    fs.readFile(NETLIFY_TOML_PATH, "utf-8"),
     fs.readFile(README_PATH, "utf-8"),
     fs.readFile(EXAMPLE_ENV_PATH, "utf-8"),
     fs.readFile(PACKAGE_JSON_PATH, "utf-8"),
@@ -64,13 +64,11 @@ async function main({ rootDirectory }) {
     ) + "\n";
 
   await Promise.all([
-    fs.writeFile(FLY_TOML_PATH, toml.stringify(prodToml)),
+    fs.writeFile(NETLIFY_TOML_PATH, toml.stringify(prodToml)),
     fs.writeFile(README_PATH, newReadme),
     fs.writeFile(ENV_PATH, newEnv),
     fs.writeFile(PACKAGE_JSON_PATH, newPackageJson),
   ]);
-
-  execSync(`npm run setup`, { stdio: "inherit", cwd: rootDirectory });
 
   // TODO: There is currently an issue with the test cleanup script that results
   // in an error when running Cypress in some cases. Add this question back

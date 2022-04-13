@@ -31,7 +31,7 @@
     "/public/build"
   ],
   "dependencies": {
-    "@netlify/functions": "*",
+    "@netlify/functions": "^0.10.0",
     "@remix-run/netlify": "*",
     "@remix-run/node": "*",
     "@remix-run/react": "*",

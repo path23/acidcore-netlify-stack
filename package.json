@@ -1,5 +1,5 @@
 {
-  "name": "indie-stack-template",
+  "name": "acidcore-netlify-stack-template",
   "private": true,
   "description": "",
   "license": "",
@@ -11,12 +11,11 @@
     "build:remix": "remix build",
     "dev": "run-p dev:*",
     "dev:css": "npm run generate:css -- --watch",
-    "dev:remix": "cross-env NODE_ENV=development binode --require ./mocks -- @remix-run/dev:remix dev",
+    "dev:remix": "cross-env NODE_ENV=development binode --require ./mocks -- netlify dev",
     "format": "prettier --write .",
     "generate:css": "tailwindcss -o ./app/styles/tailwind.css",
     "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
-    "setup": "prisma migrate dev && prisma db seed",
-    "start": "remix-serve build",
+    "start": "cross-env NODE_ENV=production netlify dev",
     "start:mocks": "binode --require ./mocks -- @remix-run/serve:remix-serve build",
     "test": "vitest",
     "test:e2e:dev": "start-server-and-test dev http://localhost:3000 \"cypress open\"",
@@ -32,7 +31,8 @@
     "/public/build"
   ],
   "dependencies": {
-    "@prisma/client": "^3.11.1",
+    "@netlify/functions": "*",
+    "@remix-run/netlify": "*",
     "@remix-run/node": "*",
     "@remix-run/react": "*",
     "@remix-run/serve": "*",
@@ -70,7 +70,6 @@
     "postcss": "^8.4.12",
     "prettier": "2.6.1",
     "prettier-plugin-tailwindcss": "^0.1.8",
-    "prisma": "^3.11.1",
     "start-server-and-test": "^1.14.0",
     "tailwindcss": "^3.0.23",
     "ts-node": "^10.7.0",
@@ -82,8 +81,5 @@
   },
   "engines": {
     "node": ">=14"
-  },
-  "prisma": {
-    "seed": "ts-node --require tsconfig-paths/register prisma/seed.ts"
   }
 }

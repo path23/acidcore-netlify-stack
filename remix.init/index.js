@@ -49,7 +49,6 @@ async function main({ rootDirectory }) {
   );
 
   const prodToml = toml.parse(prodContent);
-  prodToml.app = prodToml.app.replace(REPLACER, APP_NAME);
 
   const newReadme = readme.replace(
     new RegExp(escapeRegExp(REPLACER), "g"),

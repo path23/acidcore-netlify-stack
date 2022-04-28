@@ -5,6 +5,12 @@
 [dev]
   command = "remix watch"
   port = 3000
+  autoLaunch = false
+  framework = "remix"
+
+[functions]
+  directory = ".netlify/functions-internal"
+  node_bundler = "esbuild"
 
 [[redirects]]
   from = "/*"

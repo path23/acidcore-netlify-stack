@@ -83,23 +83,13 @@ jobs:
       - name: 🏄 Copy test env vars
         run: cp .env.example .env
 
-      - name: ⎔ Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-
-      - name: 📥 Download deps
-        uses: bahmutov/npm-install@v1
-
-      - name: ⚙️ Build
-        run: npm run build
-
       - name: 🌳 Cypress run
         uses: cypress-io/github-action@v3
         with:
           start: npm run start:mocks
           wait-on: "http://localhost:8811"
         env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           PORT: "8811"
 
   build:
@@ -129,8 +119,8 @@ jobs:
         uses: ashley-taylor/read-json-property-action@v1.0
         id: site_id
         with:
-          file: ".netlify/state.json"
-          field: "siteId"
+          path: ".netlify/state.json"
+          property: "siteId"
 
   deploy:
     name: 🚀 Deploy
@@ -161,19 +151,21 @@ jobs:
         uses: ashley-taylor/read-json-property-action@v1.0
         id: site_id
         with:
-          file: ".netlify/state.json"
-          field: "siteId"
+          path: ".netlify/state.json"
+          property: "siteId"
 
       - name: 🚀 Deploy Staging
         if: ${{ github.ref == 'refs/heads/dev' }}
         uses: nwtgck/actions-netlify@v1.2
         with:
-          publish-dir: './dist'
+          publish-dir: "./public"
           github-token: ${{ secrets.GITHUB_TOKEN }}
           deploy-message: "Deploy from GitHub Actions"
           enable-pull-request-comment: false
           enable-commit-comment: false
-          github-deployment-environment: 'branch'
+          github-deployment-environment: "branch"
+          netlify-config-path: "netlify.toml"
+          functions-dir: "./.netlify/functions-internal"
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ steps.site_id.outputs.value }}
@@ -183,13 +175,15 @@ jobs:
         if: ${{ github.ref == 'refs/heads/main' }}
         uses: nwtgck/actions-netlify@v1.2
         with:
-          publish-dir: './dist'
+          publish-dir: "./public"
           production-branch: main
           github-token: ${{ secrets.GITHUB_TOKEN }}
           deploy-message: "Deploy from GitHub Actions"
           enable-pull-request-comment: false
           enable-commit-comment: false
           overwrites-pull-request-comment: true
+          netlify-config-path: "netlify.toml"
+          functions-dir: "./.netlify/functions-internal"
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ steps.site_id.outputs.value }}

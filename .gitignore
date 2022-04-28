@@ -3,10 +3,13 @@ node_modules
 /build
 /public/build
 .env
+.cache
 
 /cypress/screenshots
 /cypress/videos
-/prisma/data.db
-/prisma/data.db-journal
 
 /app/styles/tailwind.css
+
+# Local Netlify folder
+.netlify/functions-internal
+.netlify/functions-serve

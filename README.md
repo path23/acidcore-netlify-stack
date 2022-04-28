@@ -72,6 +72,8 @@ Prior to your first deployment, you'll need to do a few things:
 
 - Add a `NETLIFY_AUTH_TOKEN` to your GitHub repo. To do this, go to your user settings on Netlify and create a new [token](https://app.netlify.com/user/applications#personal-access-tokens), then add it to [your repo secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) with the name `NETLIFY_AUTH_TOKEN`.
 
+- You might need to modify the workflow permissions in your repository settings in the the Actions/General menu item. Choose "Read and write permissions" if you run into problems during deploys.
+
 Now that everything is set up you can commit and push your changes to your repo. Every commit to your `main` branch will trigger a deployment to your production environment, and every commit to your `dev` branch will trigger a deployment to your staging environment.
 
 ### Getting Help with Deployment

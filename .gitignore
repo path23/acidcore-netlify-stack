@@ -11,5 +11,5 @@ node_modules
 /app/styles/tailwind.css
 
 # Local Netlify folder
-.netlify/functions-internal
-.netlify/functions-serve
+.netlify/*
+!.netlify/state.json
